@@ -80,7 +80,16 @@ class ServerTestClass extends Thread
     		{
     			globalArray.add(filesList.get(i));
     		}
+				
+				System.out.println("List of files at peer " + filesList.get(0).peerid + " (with port " + filesList.get(0).portNumber + "):");
+				for (FileInfo fileInfo : filesList) {
+						System.out.println("- " + fileInfo.fileName);
+				}
+
+
     		System.out.println("Total number of files available in the Server that are received from all the connected clients: " +globalArray.size());
+
+
     	}
     	
     	catch(IndexOutOfBoundsException e){
