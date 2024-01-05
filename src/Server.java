@@ -1,8 +1,6 @@
 
 import java.io.*;
 import java.net.*;
-import java.net.Socket;
-import java.net.ServerSocket;
 import java.util.Scanner;
 import java.lang.Runnable;
 import java.util.ArrayList;
@@ -24,20 +22,40 @@ public class Server {
 		Socket socket = null;
 		try {
 			serverSocket = new ServerSocket(7799);
-			System.out.println("Server started!! ");
+			InetAddress serverAddress = InetAddress.getLocalHost();
+			System.out.println("Server started on: " + serverAddress.getHostAddress());
+			// listening on port
+			System.out.println("Server listening on port: " + serverSocket.getLocalPort());
 			System.out.println(" ");
 			System.out.println("Waiting for the Client to be connected ..");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		while (true) {
+			Socket clientSocket = null;
 			try {
-				socket = serverSocket.accept();
+				clientSocket = serverSocket.accept();
+				System.out.println("Client connected: " + clientSocket);
+
+
+				// can use to check if clients are getting connected but dont uncomment while use gives error
+				// Send affirmation to the client
+				// String affirmationMessage = "Connection successful Sir";
+				// OutputStream outputStream = clientSocket.getOutputStream();
+				// outputStream.write(affirmationMessage.getBytes());
+				// outputStream.flush();
+				// outputStream.close();
+
 				// serverSocket.close();
 			} catch (IOException e) {
 				System.out.println("I/O error: " + e);
+			} finally {
+				if (clientSocket != null) {
+					// clientSocket.close();
+					new ServerTestClass(clientSocket, globalArray).start();
+				}
 			}
-			new ServerTestClass(socket, globalArray).start();
+			// new ServerTestClass(socket, globalArray).start();
 		}
 	}
 }

@@ -2,7 +2,6 @@
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,7 +12,6 @@ public class Client {
 		Socket socket;
 		ArrayList al;
 		ArrayList<FileInfo> arrList = new ArrayList<FileInfo>();
-		Scanner scanner = new Scanner(System.in);
 		ObjectInputStream ois;
 		ObjectOutputStream oos;
 		String string;
@@ -29,21 +27,35 @@ public class Client {
 			System.out.println("Enter the directory that contain the files -->");
 			directoryPath = br.readLine();
 
-			System.out.println("Enter the port number on which the peer should act as server ::");
+			System.out.println("Enter the port number on which this peer should act as server ::");
 			peerServerPort = Integer.parseInt(br.readLine());
 
 			ServerDownload objServerDownload = new ServerDownload(peerServerPort, directoryPath);
 			objServerDownload.start();
 
-			Socket clientThread = new Socket("localhost", 7799);
+			// Socket clientThread = new Socket("localhost", 7799);
 
-			ObjectOutputStream objOutStream = new ObjectOutputStream(clientThread.getOutputStream());
-			ObjectInputStream objInStream = new ObjectInputStream(clientThread.getInputStream());
+			// ObjectOutputStream objOutStream = new ObjectOutputStream(clientThread.getOutputStream());
+			// ObjectInputStream objInStream = new ObjectInputStream(clientThread.getInputStream());
 
 			al = new ArrayList();
 
-			socket = new Socket("localhost", 7799);
+			InetAddress routerAddress = InetAddress.getLocalHost();
+
+			socket = new Socket(routerAddress.getHostAddress(), 7799);
 			System.out.println("Connection has been established with the client");
+
+			InetAddress clientAddress = socket.getInetAddress();
+			System.out.println("Connected to server at: " + clientAddress.getHostAddress());
+
+			// Receive affirmation from the server
+			// can use to check if clients are getting connected but dont uncomment while
+			// use gives error
+			// InputStream inputStream = socket.getInputStream();
+			// byte[] buffer = new byte[1024];
+			// int bytesRead = inputStream.read(buffer);
+			// String affirmationMessage = new String(buffer, 0, bytesRead);
+			// System.out.println("Received affirmation: " + affirmationMessage);
 
 			ois = new ObjectInputStream(socket.getInputStream());
 			oos = new ObjectOutputStream(socket.getOutputStream());
@@ -101,7 +113,12 @@ public class Client {
 			String directoryPath) throws ClassNotFoundException {
 		try {
 			@SuppressWarnings("resource")
-			Socket clientAsServersocket = new Socket("localhost", clientAsServerPortNumber);
+			InetAddress routerAddress = InetAddress.getLocalHost();
+
+			Socket clientAsServersocket = new Socket(routerAddress.getHostAddress(), clientAsServerPortNumber);
+
+			// connected at 
+			System.out.println("Connected to Server at :"+ clientAsServersocket.getInetAddress().getHostAddress());
 
 			ObjectOutputStream clientAsServerOOS = new ObjectOutputStream(clientAsServersocket.getOutputStream());
 			ObjectInputStream clientAsServerOIS = new ObjectInputStream(clientAsServersocket.getInputStream());
