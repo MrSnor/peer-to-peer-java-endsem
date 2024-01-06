@@ -37,8 +37,8 @@ public class Server {
 				clientSocket = serverSocket.accept();
 				System.out.println("Client connected: " + clientSocket);
 
-
-				// can use to check if clients are getting connected but dont uncomment while use gives error
+				// can use to check if clients are getting connected but dont uncomment while
+				// use gives error
 				// Send affirmation to the client
 				// String affirmationMessage = "Connection successful Sir";
 				// OutputStream outputStream = clientSocket.getOutputStream();
@@ -116,13 +116,21 @@ class ServerTestClass extends Thread {
 		ArrayList<FileInfo> sendingPeers = new ArrayList<FileInfo>();
 		System.out.println("Searching for the file name...!!!");
 
+		boolean fileFound = false;
+
 		for (int j = 0; j < globalArray.size(); j++) {
 			FileInfo fileInfo = globalArray.get(j);
-			Boolean tf = fileInfo.fileName.equals(str);
+			boolean tf = fileInfo.fileName.equals(str);
 			if (tf) {
 				index = j;
 				sendingPeers.add(fileInfo);
+				fileFound = true;
 			}
+		}
+
+		if (!fileFound) {
+			// Handle the case when the file is not found
+			sendingPeers.add(new FileInfo("File not found", -1, -1));
 		}
 
 		try {

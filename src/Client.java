@@ -45,7 +45,7 @@ public class Client {
 
 			System.out.println("Enter the peerid for this directory ::");
 			int readpid = Integer.parseInt(br.readLine());
-			
+
 			// Connecting to the indexing server
 			socket = new Socket(routerAddress.getHostAddress(), 7799);
 
@@ -74,28 +74,42 @@ public class Client {
 			objectOutputStream.writeObject(arrList);
 
 			System.out.println(
-					"Enter the desired file name that you want to downloaded from the list of the files shown in the Index Server ::");
+					"Enter the desired file name that you want to downloaded from the list of the files shown in the Index Server -");
 			String fileNameToDownload = br.readLine();
 			objectOutputStream.writeObject(fileNameToDownload);
 
-			System.out.println("Waiting for the reply from Server...!!");
+			System.out.println("Waiting for the reply from Server...");
 
 			ArrayList<FileInfo> peers = new ArrayList<FileInfo>();
+
 			peers = (ArrayList<FileInfo>) objectInputStream.readObject();
 
+			boolean fileFound = false;
+
 			for (int i = 0; i < peers.size(); i++) {
-				int result = peers.get(i).peerid;
-				int port = peers.get(i).portNumber;
-				System.out.println("The file is stored at peer id " + result + " on port " + port);
+				int foundAtPeerId = peers.get(i).peerid;
+				int foundAtPort = peers.get(i).portNumber;
+
+				if (peers.get(i).fileName.equals(fileNameToDownload)) {
+					fileFound = true;
+					System.out.println("The file is stored at peer id " + foundAtPeerId + " on port " + foundAtPort);
+					break;
+				} else {
+					System.out.println("The requested file is not found on any of the peers. Try again with a different file name.");
+					break;
+				}
 			}
 
-			System.out.println("Enter the respective port number of the above peer id :");
-			int clientAsServerPortNumber = Integer.parseInt(br.readLine());
+			if (fileFound) {
+				System.out.println("Enter the respective port number of the above peer id :");
+				int clientAsServerPortNumber = Integer.parseInt(br.readLine());
 
-			System.out.println("Enter the desired peer id from which you want to download the file from :");
-			int clientAsServerPeerid = Integer.parseInt(br.readLine());
+				System.out.println("Enter the desired peer id from which you want to download the file from :");
+				int clientAsServerPeerid = Integer.parseInt(br.readLine());
 
-			clientAsServer(clientAsServerPeerid, clientAsServerPortNumber, fileNameToDownload, directoryPath);
+				clientAsServer(clientAsServerPeerid, clientAsServerPortNumber, fileNameToDownload, directoryPath);
+			} 
+
 		} catch (Exception e) {
 			System.out.println("Error in establishing the Connection between the Client and the Server!! ");
 			System.out.println("Please cross-check the host address and the port number..");
