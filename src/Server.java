@@ -26,8 +26,7 @@ public class Server {
 			System.out.println("Server started on: " + serverAddress.getHostAddress());
 			// listening on port
 			System.out.println("Server listening on port: " + serverSocket.getLocalPort());
-			System.out.println(" ");
-			System.out.println("Waiting for the Client to be connected ..");
+			System.out.println("Waiting for the Client to be connected..." + "\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
