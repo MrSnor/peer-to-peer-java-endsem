@@ -34,11 +34,6 @@ public class Client {
 
 			InetAddress routerAddress = InetAddress.getLocalHost();
 
-			socket = new Socket(routerAddress.getHostAddress(), 7799);
-
-			InetAddress clientAddress = socket.getInetAddress();
-			System.out.println("\nConnected to indexing server at: " + clientAddress.getHostAddress() + "\n");
-
 			// Receive affirmation from the server
 			// can use to check if clients are getting connected but dont uncomment while
 			// use gives error
@@ -48,11 +43,17 @@ public class Client {
 			// String affirmationMessage = new String(buffer, 0, bytesRead);
 			// System.out.println("Received affirmation: " + affirmationMessage);
 
-			objectInputStream = new ObjectInputStream(socket.getInputStream());
-			objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-
 			System.out.println("Enter the peerid for this directory ::");
 			int readpid = Integer.parseInt(br.readLine());
+			
+			// Connecting to the indexing server
+			socket = new Socket(routerAddress.getHostAddress(), 7799);
+
+			InetAddress clientAddress = socket.getInetAddress();
+			System.out.println("\nConnected to indexing server at: " + clientAddress.getHostAddress() + "\n");
+
+			objectInputStream = new ObjectInputStream(socket.getInputStream());
+			objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 
 			File folder = new File(directoryPath);
 			File[] listofFiles = folder.listFiles();
