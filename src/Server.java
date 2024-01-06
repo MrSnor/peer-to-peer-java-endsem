@@ -72,7 +72,7 @@ class ServerTestClass extends Thread {
 	ArrayList<FileInfo> filesList = new ArrayList<FileInfo>();
 	ObjectOutputStream oos;
 	ObjectInputStream ois;
-	String str;
+	String fileSearched;
 	int index;
 
 	@SuppressWarnings("unchecked")
@@ -108,7 +108,7 @@ class ServerTestClass extends Thread {
 		}
 
 		try {
-			str = (String) ois.readObject();
+			fileSearched = (String) ois.readObject();
 		} catch (IOException | ClassNotFoundException ex) {
 			Logger.getLogger(ServerTestClass.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -120,7 +120,7 @@ class ServerTestClass extends Thread {
 
 		for (int j = 0; j < globalArray.size(); j++) {
 			FileInfo fileInfo = globalArray.get(j);
-			boolean tf = fileInfo.fileName.equals(str);
+			boolean tf = fileInfo.fileName.equals(fileSearched);
 			if (tf) {
 				index = j;
 				sendingPeers.add(fileInfo);
