@@ -148,7 +148,7 @@ public class Client {
 			System.out.println(
 					"Requested file - " + fileName + ", has been downloaded to your desired directory " + directoryPath);
 			System.out.println(" ");
-			System.out.println("Display file " + fileName);
+			System.out.println("Successfully downloaded - " + fileName);
 
 			BOS.flush();
 		} catch (IOException ex) {
