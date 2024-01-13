@@ -10,23 +10,31 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The ServerDownload class represents a server that handles file downloads.
+ * It extends Thread to allow for multi-threading.
+ */
 public class ServerDownload extends Thread {
     int peerServerPort;
     String directoryPath = null;
     ServerSocket dwldServerSocket;
     Socket dwldSocket = null;
 
-    /*
-     * public ServerDownload()
-     * {
+    /**
+     * Constructor for the ServerDownload class.
      * 
-     * }
+     * @param peerServerPort   The port number for the server to listen on.
+     * @param directoryPath    The path to the directory where the downloaded files will be stored.
      */
     ServerDownload(int peerServerPort, String directoryPath) {
         this.peerServerPort = peerServerPort;
         this.directoryPath = directoryPath;
     }
 
+    /**
+     * The run method of the ServerDownload class.
+     * It listens for incoming connections and starts a new thread to handle each connection.
+     */
     public void run() {
         try {
             dwldServerSocket = new ServerSocket(peerServerPort);
@@ -38,15 +46,27 @@ public class ServerDownload extends Thread {
     }
 }
 
+/**
+ * This class represents a thread that handles server-side file downloads.
+ */
 class ServerDownloadThread extends Thread {
-    Socket dwldThreadSocket;
-    String directoryPath;
+    Socket dwldThreadSocket; // The socket for the download thread
+    String directoryPath; // The path to the directory where the files are stored
 
+    /**
+     * Constructs a ServerDownloadThread object.
+     *
+     * @param dwldThreadSocket The socket for the download thread
+     * @param directoryPath The path to the directory where the files are stored
+     */
     public ServerDownloadThread(Socket dwldThreadSocket, String directoryPath) {
         this.dwldThreadSocket = dwldThreadSocket;
         this.directoryPath = directoryPath;
     }
 
+    /**
+     * Runs the server-side file download logic.
+     */
     @SuppressWarnings({ "unused", "resource" })
     public void run() {
         try {
@@ -54,7 +74,8 @@ class ServerDownloadThread extends Thread {
             ObjectInputStream objIS = new ObjectInputStream(dwldThreadSocket.getInputStream());
 
             String fileName = (String) objIS.readObject();
-            String fileLocation;// Stores the directory name
+            String fileLocation; // Stores the directory name
+            
             while (true) {
                 File myFile = new File(directoryPath + "//" + fileName);
                 long length = myFile.length();

@@ -137,7 +137,8 @@ public class Client {
 
 			Socket clientAsServersocket = new Socket(routerAddress.getHostAddress(), clientAsServerPortNumber);
 
-			System.out.println("Setting up a peer connection at :" + clientAsServersocket.getInetAddress().getHostAddress());
+			System.out.println("\n" + "Setting up a peer connection at :" + clientAsServersocket.getInetAddress().getHostAddress() + ":" + clientAsServersocket.getPort());
+
 
 			ObjectOutputStream clientAsServerOOS = new ObjectOutputStream(clientAsServersocket.getOutputStream());
 			ObjectInputStream clientAsServerOIS = new ObjectInputStream(clientAsServersocket.getInputStream());
